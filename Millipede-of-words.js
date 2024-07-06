@@ -40,3 +40,47 @@ function solution(words, current = '') {
 }
 
 // or
+
+class Word {
+  wordId;
+  firstChar;
+  lastChar;
+
+  constructor(wordId, firstChar, lastChar) {
+    this.wordId = wordId;
+    this.firstChar = firstChar;
+    this.lastChar = lastChar;
+  }
+}
+
+function solution(wordsArray) {
+  const words = [];
+  const idsArray = [];
+
+  wordsArray.forEach((word, index) => {
+    words.push(new Word(index, word[0], word[word.length - 1]));
+    idsArray.push(index);
+  });
+
+  let result = false;
+  let queue = [];
+  words.forEach(word => queue.push([word.wordId]));
+
+  while (queue.length > 0) {
+    const currentArray = queue.shift();
+    const lastWord = words[currentArray[currentArray.length - 1]];
+
+    if (currentArray.length === words.length) {
+      result = true;
+      break;
+    }
+
+    let wordIdsLeft = idsArray.filter(id => !currentArray.includes(id) && lastWord.lastChar === words[id].firstChar);
+
+    wordIdsLeft.forEach(id => {
+      queue.unshift([...currentArray, id]);
+    })
+  }
+
+  return result;
+}
