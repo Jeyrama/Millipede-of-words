@@ -38,3 +38,5 @@ function solution(words, current = '') {
   }
   return false;
 }
+
+// or
